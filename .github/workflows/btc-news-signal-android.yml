@@ -1,0 +1,28 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [btc-news-signal]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - run: gradle assembleDebug --stacktrace
+        working-directory: btc-news-signal
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BTC-News-Signal-v0.1.0-debug
+          path: btc-news-signal/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
