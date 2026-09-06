@@ -23,6 +23,6 @@ jobs:
         working-directory: btc-news-signal
       - uses: actions/upload-artifact@v4
         with:
-          name: BTC-News-Signal-v0.1.0-debug
+          name: BTC-News-Signal-v0.1.1-debug
           path: btc-news-signal/app/build/outputs/apk/debug/app-debug.apk
           retention-days: 30

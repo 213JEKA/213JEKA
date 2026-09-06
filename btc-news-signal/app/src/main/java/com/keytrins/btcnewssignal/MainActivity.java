@@ -77,7 +77,7 @@ public final class MainActivity extends Activity {
         @JavascriptInterface public void refreshBtc() {
             executor.execute(() -> {
                 try { send("window.receiveMarket", MarketData.fetchSignal().toString()); }
-                catch (Exception e) { send("window.receiveError", "Нет соединения с Binance"); }
+                catch (Exception e) { send("window.receiveMarketError", "Bybit: нет связи с рынком"); }
             });
         }
 

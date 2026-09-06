@@ -1,4 +1,4 @@
-let events=[];let market=null;let timer=null;
+let events=[];let market=null;let marketError='';let timer=null;
 const $=id=>document.getElementById(id);
 const fmtPct=n=>`${n>=0?'+':''}${n.toFixed(3)}%`;
 const pad=n=>String(n).padStart(2,'0');
@@ -7,7 +7,8 @@ window.receiveEvents=json=>{
   try{events=JSON.parse(json).filter(e=>e.timeMillis>Date.now()-3600000);renderEvents();renderNext();}
   catch(e){showToast('Ошибка календаря');}
 };
-window.receiveMarket=json=>{try{market=JSON.parse(json);renderMarket();renderSignal();}catch(e){showToast('Ошибка данных BTC');}};
+window.receiveMarket=json=>{try{market=JSON.parse(json);marketError='';renderMarket();renderSignal();}catch(e){showToast('Ошибка данных BTC');}};
+window.receiveMarketError=message=>{market=null;marketError=message;$('price').textContent='—';$('p30').textContent='—';$('p60').textContent='—';$('updated').textContent=message;$('alignment').textContent='нажмите ↻ для повтора';renderSignal();showToast(message);};
 window.receiveError=showToast;
 
 function nextEvent(){return events.find(e=>e.timeMillis>Date.now()-60000)||null}
@@ -26,6 +27,7 @@ function tick(){
   renderSignal();
 }
 function renderMarket(){
+  $('marketName').textContent=`${market.market||'BTCUSDT'} · ${(market.provider||'Bybit').toUpperCase()}`;
   $('price').textContent=`$${market.price.toLocaleString('en-US',{maximumFractionDigits:2})}`;$('p30').textContent=fmtPct(market.p30);$('p60').textContent=fmtPct(market.p60);
   setDirection($('p30'),market.p30);setDirection($('p60'),market.p60);$('alignment').textContent=market.aligned?'30м и 60м совпадают':'направления не совпадают';
   $('updated').textContent=`обновлено ${new Date(market.updatedAt).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
@@ -33,7 +35,7 @@ function renderMarket(){
 function setDirection(el,n){el.classList.remove('positive','negative');el.classList.add(n>0?'positive':n<0?'negative':'')}
 function renderSignal(){
   const card=$('signalCard'),e=nextEvent();card.className='signal wait';let text='НЕТ СИГНАЛА',hint='Ждём окно за 60 минут до релиза';
-  if(!e){hint='Нет ближайшей новости'}else if(e.timeMillis-Date.now()<=3600000&&market){
+  if(!e){hint='Нет ближайшей новости'}else if(marketError){hint=marketError}else if(e.timeMillis-Date.now()<=3600000&&market){
     if(market.signal==='BUY'){card.className='signal buy';text='BUY EUR/USD';hint=`BTC ${fmtPct(market.p30)} за 30м · ${e.type}: удержание ${e.hold}`}
     else if(market.signal==='SELL'){card.className='signal sell';text='SELL EUR/USD';hint=`BTC ${fmtPct(market.p30)} за 30м · ${e.type}: удержание ${e.hold}`}
     else{hint=Math.abs(market.p30)<market.threshold?'Импульс BTC слабее 0,15%':'30м и 60м не подтверждают друг друга'}
