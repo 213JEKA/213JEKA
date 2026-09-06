@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>BTC News Signal</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div><span class="eyebrow">EUR/USD NEWS EDGE</span><h1>BTC Signal</h1></div>
+      <button id="refresh" aria-label="Обновить">↻</button>
+    </header>
+
+    <section class="next-card">
+      <div class="row"><span id="eventType" class="badge">—</span><span id="quality" class="quality">календарь загружается</span></div>
+      <h2 id="eventTitle">Ближайшая новость</h2>
+      <div id="eventDate" class="event-date">—</div>
+      <div id="countdown" class="countdown">—</div>
+      <div id="phase" class="phase">Ожидание данных</div>
+    </section>
+
+    <section id="signalCard" class="signal wait">
+      <div class="signal-label">РЕШЕНИЕ</div>
+      <div id="signalText" class="signal-text">НЕТ СИГНАЛА</div>
+      <div id="signalHint" class="signal-hint">Сигнал активируется за 60 минут до новости</div>
+    </section>
+
+    <section class="metrics">
+      <article><span>BTCUSDT</span><strong id="price">—</strong><small id="updated">нет данных</small></article>
+      <article><span>Импульс 30м</span><strong id="p30">—</strong><small>порог ±0,15%</small></article>
+      <article><span>Импульс 60м</span><strong id="p60">—</strong><small id="alignment">проверка направления</small></article>
+    </section>
+
+    <button class="permission" onclick="Android.enableExactAlarms()">Разрешить точные уведомления</button>
+
+    <section class="schedule">
+      <div class="section-title"><h3>Только рабочие новости</h3><span>Время телефона</span></div>
+      <div id="events" class="event-list"><div class="empty">Обновляю официальный календарь BLS…</div></div>
+    </section>
+
+    <section class="rule">
+      <h3>Правило v0.1</h3>
+      <p><b>BUY EUR/USD</b>: BTC +0,15% или больше за 30 минут, а 30м и 60м направлены вверх.</p>
+      <p><b>SELL EUR/USD</b>: BTC −0,15% или меньше, а 30м и 60м направлены вниз.</p>
+      <p>Основное удержание: PPI 10–60 секунд; NFP/CPI 1–5 минут. Цель 10–15 пунктов.</p>
+    </section>
+  </main>
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
