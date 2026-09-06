@@ -21,7 +21,7 @@ Android-приложение для ручной торговли EUR/USD пер
 
 ## APK через GitHub Actions
 
-После каждого push в `main` откройте **Actions → Build Android APK → Artifacts** и скачайте `BTC-News-Signal-v0.1.0-debug`.
+Проект хранится в ветке `btc-news-signal`. После каждого push в эту ветку откройте **Actions → Build Android APK → Artifacts** и скачайте `BTC-News-Signal-v0.1.0-debug`.
 
 Для точных напоминаний разрешите приложению уведомления и точные будильники. На некоторых телефонах также потребуется отключить ограничение фоновой работы для приложения.
 
